@@ -12,12 +12,16 @@ class DatabaseService {
     _postsRef = _firestore
         .collection(POST_COLLECTION_REF)
         .withConverter<Post>(
-          fromFirestore: (snapshot, _) => Post.fromJson(snapshot.data()!),
+          fromFirestore: (snapshots, _) => Post.fromJson(snapshots.data()!),
           toFirestore: (post, _) => post.toJson(),
         );
   }
 
   Stream<QuerySnapshot> getPosts() {
     return _postsRef.snapshots();
+  }
+
+  void addPost(Post post) async {
+    await _postsRef.add(post);
   }
 }
