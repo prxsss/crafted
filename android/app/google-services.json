@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1027364161748",
+    "project_id": "crafted-project",
+    "storage_bucket": "crafted-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027364161748:android:c20470009c027791559341",
+        "android_client_info": {
+          "package_name": "com.example.crafted"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAIiNC_Oi2ixW3iAD-6cgXraPumimWMDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
