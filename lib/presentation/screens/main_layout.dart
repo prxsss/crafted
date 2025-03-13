@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:crafted/presentation/screens/search_screen.dart';
 import 'package:crafted/presentation/screens/profile_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -107,7 +108,7 @@ class _MainLayoutState extends State<MainLayout> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           title: const Text('Sign out', style: TextStyle(fontSize: 18)),
           content: const Text(
-            'Do you really want to sign out from <App Name> app?',
+            'Do you really want to sign out from Crafted app?',
             style: TextStyle(color: Color(0xff6B6B6B)),
           ),
           actions: [
@@ -123,6 +124,7 @@ class _MainLayoutState extends State<MainLayout> {
             TextButton(
               onPressed: () {
                 FirebaseAuth.instance.signOut();
+                GoogleSignIn().disconnect();
                 Navigator.pop(context);
               },
               child: const Text(
