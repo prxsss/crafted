@@ -8,6 +8,6 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('${user!.email}'));
+    return Center(child: Text('${user!.displayName ?? user!.email}'));
   }
 }
