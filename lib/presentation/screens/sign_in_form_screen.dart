@@ -22,7 +22,7 @@ class _SignInFormScreenState extends State<SignInFormScreen> {
           children: [
             const SizedBox(height: 20),
             const Text(
-              'Medium',
+              'Crafted',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
