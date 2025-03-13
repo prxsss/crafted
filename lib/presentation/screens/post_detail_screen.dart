@@ -1,34 +1,19 @@
+import 'package:crafted/data/models/post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:intl/intl.dart';
 
 class PostDetailScreen extends StatefulWidget {
-  const PostDetailScreen({super.key});
+  final String postId;
+  final Post post;
+
+  const PostDetailScreen(this.postId, this.post, {super.key});
 
   @override
   State<PostDetailScreen> createState() => _PostDetailScreenState();
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
-  String markdownSource = '''
-![](https://miro.medium.com/v2/resize:fit:1024/0*vq-JSMynSHUPXx70)  
-
-## 🚀 Express.js Secrets That Senior Developers Don't Share
-
-Express.js is a powerful and lightweight web framework for Node.js, but there are hidden techniques and best practices that senior developers often keep to themselves. In this post, we'll reveal some of these secrets to help you level up your Express.js skills.  
-
-### 1️⃣ Middleware Magic: Conditional Execution  
-Most developers use middleware, but did you know you can conditionally execute them based on request properties?  
-
-```js
-app.use((req, res, next) => {
-  if (req.method === "POST" && req.path.startsWith("/admin")) {
-    console.log("Admin route accessed via POST");
-  }
-  next();
-});
-```
-''';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,15 +22,15 @@ app.use((req, res, next) => {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 25),
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: Text(
-              "Express.js Secrets That Senior Developers Don't Share",
+              widget.post.title,
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 30),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: Row(
               children: [
@@ -68,7 +53,7 @@ app.use((req, res, next) => {
                         ),
                       ),
                       Text(
-                        'Feb 21, 2025',
+                        DateFormat('MMM dd, yyyy').format(DateTime.now()),
                         style: TextStyle(color: Color(0xff6B6B6B)),
                       ),
                     ],
@@ -81,7 +66,7 @@ app.use((req, res, next) => {
           // const Text('Markdown will goes here...', style: TextStyle(fontSize: 18)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: MarkdownBody(selectable: true, data: markdownSource),
+            child: MarkdownBody(selectable: true, data: widget.post.content),
           ),
 
           const SizedBox(height: 50),
