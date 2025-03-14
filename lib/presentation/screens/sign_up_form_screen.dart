@@ -61,14 +61,21 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
-                const Text(
+                Text(
                   'Crafted',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
+                Text(
                   'Create your account',
-                  style: TextStyle(fontSize: 22),
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
                 const SizedBox(height: 30),
                 Padding(
@@ -76,7 +83,12 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Your full name'),
+                      Text(
+                        'Your full name',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: nameController,
@@ -88,23 +100,6 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                         },
                         autofocus: true,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 12,
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xffF2F2F2),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: const BorderSide(
-                              color: Colors.black,
-                              width: 1.5,
-                            ),
-                          ),
                           hintText: 'Input your first name and last name',
                         ),
                       ),
@@ -117,7 +112,12 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Your email'),
+                      Text(
+                        'Your email',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: emailController,
@@ -128,23 +128,6 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 12,
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xffF2F2F2),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: const BorderSide(
-                              color: Colors.black,
-                              width: 1.5,
-                            ),
-                          ),
                           hintText: 'janedoe@email.com',
                         ),
                       ),
@@ -157,7 +140,12 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Your password'),
+                      Text(
+                        'Your password',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: passwordController,
@@ -169,23 +157,6 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                         },
                         obscureText: !isPasswordVisible,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 12,
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xffF2F2F2),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: BorderSide.none,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: const BorderSide(
-                              color: Colors.black,
-                              width: 1.5,
-                            ),
-                          ),
                           hintText: 'Input your password',
                           suffixIcon: IconButton(
                             onPressed: () {
@@ -220,12 +191,10 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff1a8917),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     ),
-                    child: const Text(
-                      'Create account',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    child: const Text('Create account'),
                   ),
                 ),
               ],

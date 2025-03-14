@@ -28,19 +28,26 @@ class SignInChoiceScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
+            SizedBox(
               width: 280,
               child: Text(
                 'Human stories and ideas.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 48, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
+            Text(
               'Discover perspectives that deepen understanding.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
             const SizedBox(height: 40),
             AuthButton(
@@ -64,14 +71,21 @@ class SignInChoiceScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Don't have an account? "),
+                Text(
+                  "Don't have an account? ",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
                 TextButton(
                   onPressed: () {
                     onNavigateToSignUpScreenPressed();
                   },
-                  child: const Text(
+                  child: Text(
                     'Sign up',
-                    style: TextStyle(color: Colors.green),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                 ),
               ],

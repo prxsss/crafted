@@ -21,12 +21,11 @@ class AuthButton extends StatelessWidget {
         onPressed: () {
           onAuthButtonPressed();
         },
-        icon: FaIcon(icon, color: Colors.black),
-        label: Text(text, style: const TextStyle(color: Colors.black)),
+        icon: FaIcon(icon),
+        label: Text(text),
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          side: const BorderSide(color: Colors.black),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+          foregroundColor: Theme.of(context).colorScheme.primary,
           minimumSize: const Size(double.infinity, 50),
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:crafted/presentation/widgets/auth_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -43,30 +44,37 @@ class SignUpChoiceScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
+            SizedBox(
               width: 280,
               child: Text(
                 'Human stories and ideas.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 48, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
+            Text(
               'Discover perspectives that deepen understanding.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
             const SizedBox(height: 40),
-            SignUpChoiceButton(
+            AuthButton(
               icon: FontAwesomeIcons.google,
               text: 'Sign up with Google',
-              onSignUpButtonPressed: signInWithGoogle,
+              onAuthButtonPressed: signInWithGoogle,
             ),
-            SignUpChoiceButton(
+            AuthButton(
               icon: FontAwesomeIcons.envelope,
               text: 'Sign up with Email',
-              onSignUpButtonPressed: () {
+              onAuthButtonPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -79,14 +87,21 @@ class SignUpChoiceScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Already have an account? '),
+                Text(
+                  'Already have an account? ',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
                 TextButton(
                   onPressed: () {
                     onNavigateToSignInScreenPressed();
                   },
-                  child: const Text(
+                  child: Text(
                     'Sign in',
-                    style: TextStyle(color: Colors.green),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                 ),
               ],
@@ -98,35 +113,32 @@ class SignUpChoiceScreen extends StatelessWidget {
   }
 }
 
-class SignUpChoiceButton extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final void Function() onSignUpButtonPressed;
+// class SignUpChoiceButton extends StatelessWidget {
+//   final IconData icon;
+//   final String text;
+//   final void Function() onSignUpButtonPressed;
 
-  const SignUpChoiceButton({
-    super.key,
-    required this.icon,
-    required this.text,
-    required this.onSignUpButtonPressed,
-  });
+//   const SignUpChoiceButton({
+//     super.key,
+//     required this.icon,
+//     required this.text,
+//     required this.onSignUpButtonPressed,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: ElevatedButton.icon(
-        onPressed: () {
-          onSignUpButtonPressed();
-        },
-        icon: FaIcon(icon, color: Colors.black),
-        label: Text(text, style: const TextStyle(color: Colors.black)),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          side: const BorderSide(color: Colors.black),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          minimumSize: const Size(double.infinity, 50),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(vertical: 8.0),
+//       child: ElevatedButton.icon(
+//         onPressed: () {
+//           onSignUpButtonPressed();
+//         },
+//         icon: FaIcon(icon),
+//         label: Text(text),
+//         style: ElevatedButton.styleFrom(
+//           minimumSize: const Size(double.infinity, 50),
+//         ),
+//       ),
+//     );
+//   }
+// }
