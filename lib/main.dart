@@ -40,6 +40,9 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(foregroundColor: kColorScheme.primary),
+        ),
         inputDecorationTheme: InputDecorationTheme().copyWith(
           suffixIconColor: kColorScheme.primary,
           errorStyle: TextStyle().copyWith(color: kColorScheme.error),

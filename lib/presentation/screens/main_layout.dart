@@ -97,22 +97,26 @@ class _MainLayoutState extends State<MainLayout> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          title: const Text('Sign out', style: TextStyle(fontSize: 18)),
-          content: const Text(
+          title: Text(
+            'Sign out',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          content: Text(
             'Do you really want to sign out from Crafted app?',
-            style: TextStyle(color: Color(0xff6B6B6B)),
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.black),
-              ),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -120,10 +124,7 @@ class _MainLayoutState extends State<MainLayout> {
                 GoogleSignIn().disconnect();
                 Navigator.pop(context);
               },
-              child: const Text(
-                'Confirm',
-                style: TextStyle(color: Colors.black),
-              ),
+              child: const Text('Confirm'),
             ),
           ],
         );
