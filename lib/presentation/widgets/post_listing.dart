@@ -48,6 +48,7 @@ class PostListing extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
         child: Column(
           children: [
             Row(
@@ -66,9 +67,11 @@ class PostListing extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                const Text(
+                Text(
                   'Arunangshu Das',
-                  style: TextStyle(color: Color(0xff242424)),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ],
             ),
@@ -82,7 +85,7 @@ class PostListing extends StatelessWidget {
                       Text(
                         post.title,
                         style: TextStyle(
-                          color: Color(0xff242424),
+                          color: Theme.of(context).colorScheme.primary,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -92,7 +95,7 @@ class PostListing extends StatelessWidget {
                           ? Text(
                             markdownToPlainText(post.content),
                             style: TextStyle(
-                              color: Color(0xff6B6B6B),
+                              color: Theme.of(context).colorScheme.onSurface,
                               overflow: TextOverflow.ellipsis,
                             ),
                             maxLines: 2,
@@ -120,7 +123,9 @@ class PostListing extends StatelessWidget {
               children: [
                 Text(
                   DateFormat('MMM dd, yyyy').format(post.updatedAt.toDate()),
-                  style: TextStyle(color: Color(0xff6B6B6B)),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
                 const SizedBox(width: 20),
                 showLikesCount

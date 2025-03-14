@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(
         colorScheme: kColorScheme,
+        scaffoldBackgroundColor: kColorScheme.surface,
         appBarTheme: AppBarTheme().copyWith(
           foregroundColor: kColorScheme.primary,
         ),
@@ -57,6 +58,11 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(6),
             borderSide: BorderSide(color: kColorScheme.primary, width: 1.5),
           ),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData().copyWith(
+          backgroundColor: kColorScheme.surface,
+          selectedItemColor: kColorScheme.primary,
+          unselectedItemColor: kColorScheme.onSurfaceVariant,
         ),
       ),
       home: const AuthWrapper(),

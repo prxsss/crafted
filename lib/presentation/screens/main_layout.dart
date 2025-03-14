@@ -70,28 +70,21 @@ class _MainLayoutState extends State<MainLayout> {
           currentIndex: activeScreen,
           showSelectedLabels: false,
           showUnselectedLabels: false,
-
           items: const [
             BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.house),
               label: 'Home',
-              activeIcon: FaIcon(FontAwesomeIcons.house, color: Colors.black),
+              activeIcon: FaIcon(FontAwesomeIcons.house),
             ),
             BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
               label: 'Search',
-              activeIcon: FaIcon(
-                FontAwesomeIcons.magnifyingGlass,
-                color: Colors.black,
-              ),
+              activeIcon: FaIcon(FontAwesomeIcons.magnifyingGlass),
             ),
             BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.user),
               label: 'Profile',
-              activeIcon: FaIcon(
-                FontAwesomeIcons.solidUser,
-                color: Colors.black,
-              ),
+              activeIcon: FaIcon(FontAwesomeIcons.solidUser),
             ),
           ],
         ),

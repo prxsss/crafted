@@ -26,7 +26,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: Text(
               widget.post.title,
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
           const SizedBox(height: 30),
@@ -49,12 +53,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         'Arunangshu Das',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Color(0xff242424),
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                       Text(
                         DateFormat('MMM dd, yyyy').format(DateTime.now()),
-                        style: TextStyle(color: Color(0xff6B6B6B)),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ],
                   ),
@@ -63,7 +69,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             ),
           ),
           const SizedBox(height: 30),
-          // const Text('Markdown will goes here...', style: TextStyle(fontSize: 18)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: MarkdownBody(selectable: true, data: widget.post.content),

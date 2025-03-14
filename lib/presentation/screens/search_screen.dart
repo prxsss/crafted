@@ -21,23 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: TextField(
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 12,
-                ),
-                filled: true,
-                fillColor: const Color(0xffF2F2F2),
-                hintText: 'Search....',
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(6),
-                  borderSide: const BorderSide(color: Colors.black, width: 1.5),
-                ),
-              ),
+              decoration: InputDecoration(hintText: 'Search....'),
             ),
           ),
           const Divider(thickness: 0),
