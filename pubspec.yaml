@@ -44,6 +44,7 @@ dependencies:
   markdown: ^7.3.0
   dotted_border: ^2.1.0
   image_picker: ^1.1.2
+  supabase_flutter: ^2.8.4
 
 dev_dependencies:
   flutter_test:
