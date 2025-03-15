@@ -1,4 +1,3 @@
-import 'package:crafted/data/models/user.dart';
 import 'package:crafted/data/services/database_service.dart';
 import 'package:crafted/presentation/widgets/auth_button.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -29,15 +28,16 @@ class SignUpChoiceScreen extends StatelessWidget {
       idToken: googleAuth?.idToken,
     );
 
-    await auth.FirebaseAuth.instance.signInWithCredential(credential);
+    final auth.User user =
+        (await auth.FirebaseAuth.instance.signInWithCredential(
+          credential,
+        )).user!;
 
-    _databaseService.saveUser(
-      User(
-        email: googleUser!.email,
-        name: googleUser.displayName!,
-        photoUrl: googleUser.photoUrl!,
-      ),
-    );
+    print('Successfully signed in with Google: ${user.displayName}');
+
+    auth.User firebaseUser = auth.FirebaseAuth.instance.currentUser!;
+
+    _databaseService.createUserInDatabaseWithEmail(firebaseUser);
   }
 
   @override

@@ -53,4 +53,21 @@ class DatabaseService {
           ),
         );
   }
+
+  void createUserInDatabaseWithGoogleProvider(auth.User firebaseUser) async {
+    await _usersRef
+        .doc(firebaseUser.email)
+        .set(
+          User(
+            email: firebaseUser.email!,
+            name: firebaseUser.displayName!,
+            photoUrl: firebaseUser.photoURL!,
+          ),
+        )
+        .whenComplete(
+          () => print(
+            'Created user in database with Google Provider. Name: ${firebaseUser.displayName} | Email: ${firebaseUser.email} | PhotoUrl: ${firebaseUser.photoURL}',
+          ),
+        );
+  }
 }
