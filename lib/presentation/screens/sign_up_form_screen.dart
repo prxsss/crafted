@@ -1,4 +1,3 @@
-import 'package:crafted/data/models/user.dart';
 import 'package:crafted/data/services/database_service.dart';
 import 'package:crafted/main.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -32,22 +31,41 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
       },
     );
     try {
-      await auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      var userCredential = await auth.FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text,
+          );
 
+      // FirebaseUser
+      var newUser = userCredential.user;
+
+      // Add the  display name to the FirebaseUser
+      String newDisplayName = nameController.text;
+
+      // Add the photoUrl to the FirebaseUser
       String photoUrl =
           'https://avatar.iran.liara.run/username?username=${nameController.text.split(' ').join('+')}';
 
-      _databaseService.saveUser(
-        User(
-          email: emailController.text,
-          name: nameController.text,
-          photoUrl: photoUrl,
-        ),
+      await newUser!.updateProfile(
+        displayName: newDisplayName,
+        photoURL: photoUrl,
       );
+
+      // Refresh data
+      await newUser.reload();
+
+      // Need to make this call to get the updated display name and photoUrl; or else display name and photoUrl will be null
+      auth.User updatedUser = auth.FirebaseAuth.instance.currentUser!;
+
+      // ignore: avoid_print
+      print('new display name: ${updatedUser.displayName}');
+      // ignore: avoid_print
+      print('new photoUrl: ${updatedUser.photoURL}');
+
+      _databaseService.createUserInDatabaseWithEmail(updatedUser);
     } on auth.FirebaseAuthException catch (e) {
+      // ignore: avoid_print
       print(e);
     }
     navigatorKey.currentState!.popUntil(
