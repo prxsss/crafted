@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crafted/data/models/post.dart';
 import 'package:crafted/data/models/user.dart';
@@ -36,7 +37,20 @@ class DatabaseService {
   }
 
   // users
-  void saveUser(User user) async {
-    await _usersRef.doc(user.email).set(user);
+  void createUserInDatabaseWithEmail(auth.User firebaseUser) async {
+    await _usersRef
+        .doc(firebaseUser.email)
+        .set(
+          User(
+            email: firebaseUser.email!,
+            name: firebaseUser.displayName!,
+            photoUrl: firebaseUser.photoURL!,
+          ),
+        )
+        .whenComplete(
+          () => print(
+            'Created user in database with email. Name: ${firebaseUser.displayName} | Email: ${firebaseUser.email} | PhotoUrl: ${firebaseUser.photoURL}',
+          ),
+        );
   }
 }
