@@ -1,3 +1,4 @@
+import 'package:crafted/presentation/screens/create_post_screen.dart';
 import 'package:crafted/presentation/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,12 @@ class _MainLayoutState extends State<MainLayout> {
       ),
       body: screenWidget,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreatePostScreen()),
+          );
+        },
         child: FaIcon(FontAwesomeIcons.penToSquare),
       ),
       bottomNavigationBar: Container(
