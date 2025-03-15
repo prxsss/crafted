@@ -1,9 +1,17 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crafted/data/models/post.dart';
+import 'package:crafted/data/services/database_service.dart';
+import 'package:crafted/main.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -13,6 +21,8 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
+  final DatabaseService _databaseService = DatabaseService();
+
   final _formKey = GlobalKey<FormState>();
 
   final _titleController = TextEditingController();
@@ -49,12 +59,37 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         title: const Text('Create Post'),
         actions: [
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                print('Title:');
-                print(_titleController.text);
-                print('Content:');
-                print(_contentController.text);
+                final String postId = Uuid().v4();
+                final supabase = Supabase.instance.client;
+                final String postCoverImagePath = 'posts/$postId/cover.jpg';
+
+                final uploadedPostCoverImagePath = await supabase.storage
+                    .from('images')
+                    .upload(postCoverImagePath, _selectedImage!);
+
+                print('uploadedPostCoverImagePath');
+                print(uploadedPostCoverImagePath);
+
+                final uploadedPostCoverImageUrl = supabase.storage
+                    .from('images')
+                    .getPublicUrl(postCoverImagePath);
+
+                print('uploadedPostCoverImageUrl');
+                print(uploadedPostCoverImageUrl);
+
+                _databaseService.addPost(
+                  Post(
+                    title: _titleController.text,
+                    content: _contentController.text,
+                    createdAt: Timestamp.now(),
+                    updatedAt: Timestamp.now(),
+                    imageUrl: uploadedPostCoverImageUrl,
+                  ),
+                );
+
+                navigatorKey.currentState!.pop();
               }
             },
             style: ElevatedButton.styleFrom(
