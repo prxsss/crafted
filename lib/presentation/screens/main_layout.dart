@@ -50,6 +50,10 @@ class _MainLayoutState extends State<MainLayout> {
         ],
       ),
       body: screenWidget,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: FaIcon(FontAwesomeIcons.penToSquare),
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [

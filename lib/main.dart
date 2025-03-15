@@ -62,6 +62,12 @@ class MyApp extends StatelessWidget {
             borderSide: BorderSide(color: kColorScheme.primary, width: 1.5),
           ),
         ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData().copyWith(
+          shape: const CircleBorder(),
+          backgroundColor: kColorScheme.primary,
+          foregroundColor: kColorScheme.onPrimary,
+          iconSize: 20,
+        ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData().copyWith(
           backgroundColor: kColorScheme.surface,
           selectedItemColor: kColorScheme.primary,
