@@ -1,5 +1,7 @@
+import 'package:crafted/data/models/user.dart';
+import 'package:crafted/data/services/database_service.dart';
 import 'package:crafted/presentation/widgets/auth_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 
 import 'package:crafted/presentation/screens/sign_up_form_screen.dart';
@@ -7,10 +9,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpChoiceScreen extends StatelessWidget {
-  const SignUpChoiceScreen({
+  SignUpChoiceScreen({
     super.key,
     required this.onNavigateToSignInScreenPressed,
   });
+
+  final DatabaseService _databaseService = DatabaseService();
 
   final void Function() onNavigateToSignInScreenPressed;
 
@@ -20,12 +24,20 @@ class SignUpChoiceScreen extends StatelessWidget {
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
 
-    final credential = GoogleAuthProvider.credential(
+    final credential = auth.GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
 
-    await FirebaseAuth.instance.signInWithCredential(credential);
+    await auth.FirebaseAuth.instance.signInWithCredential(credential);
+
+    _databaseService.saveUser(
+      User(
+        email: googleUser!.email,
+        name: googleUser.displayName!,
+        photoUrl: googleUser.photoUrl!,
+      ),
+    );
   }
 
   @override

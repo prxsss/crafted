@@ -1,5 +1,7 @@
+import 'package:crafted/data/models/user.dart';
+import 'package:crafted/data/services/database_service.dart';
 import 'package:crafted/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -11,6 +13,8 @@ class SignUpFormScreen extends StatefulWidget {
 }
 
 class _SignUpFormScreenState extends State<SignUpFormScreen> {
+  final DatabaseService _databaseService = DatabaseService();
+
   final _formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
@@ -28,11 +32,22 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
       },
     );
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
-    } on FirebaseAuthException catch (e) {
+
+      String photoUrl =
+          'https://avatar.iran.liara.run/username?username=${nameController.text.split(' ').join('+')}';
+
+      _databaseService.saveUser(
+        User(
+          email: emailController.text,
+          name: nameController.text,
+          photoUrl: photoUrl,
+        ),
+      );
+    } on auth.FirebaseAuthException catch (e) {
       print(e);
     }
     navigatorKey.currentState!.popUntil(

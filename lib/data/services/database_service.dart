@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crafted/data/models/post.dart';
-import 'package:crafted/data/models/user_data.dart';
+import 'package:crafted/data/models/user.dart';
 
 const String POST_COLLECTION_REF = 'posts';
 const String USER_COLLECTION_REF = 'users';
@@ -20,8 +20,8 @@ class DatabaseService {
         );
     _usersRef = _firestore
         .collection(USER_COLLECTION_REF)
-        .withConverter<UserData>(
-          fromFirestore: (snapshots, _) => UserData.fromJson(snapshots.data()!),
+        .withConverter<User>(
+          fromFirestore: (snapshots, _) => User.fromJson(snapshots.data()!),
           toFirestore: (user, _) => user.toJson(),
         );
   }
@@ -36,7 +36,7 @@ class DatabaseService {
   }
 
   // users
-  void saveUser(UserData user) async {
+  void saveUser(User user) async {
     await _usersRef.doc(user.email).set(user);
   }
 }
