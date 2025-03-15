@@ -29,11 +29,15 @@ class DatabaseService {
 
   // posts
   Stream<QuerySnapshot> getPosts() {
-    return _postsRef.snapshots();
+    return _postsRef.orderBy('createdAt', descending: true).snapshots();
   }
 
   void addPost(Post post) async {
     await _postsRef.add(post);
+  }
+
+  void updatePost(String postId, Post post) async {
+    _postsRef.doc(postId).update(post.toJson());
   }
 
   // users
