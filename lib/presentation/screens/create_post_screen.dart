@@ -123,11 +123,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 _selectedImage != null
                     ? Row(
                       mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ElevatedButton(
                           onPressed: () {
                             _pickImageFromGallery();
                           },
+                          style: ElevatedButton.styleFrom(
+                            side: BorderSide.none,
+                          ),
                           child: const Text('Change'),
                         ),
                         const SizedBox(width: 8),
