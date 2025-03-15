@@ -1,19 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crafted/data/models/environment.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:crafted/presentation/screens/auth_wrapper.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 var kColorScheme = ColorScheme.fromSeed(seedColor: Color(0xffd08700));
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: Environment.fileName);
   await Firebase.initializeApp();
   await Supabase.initialize(
-    url: 'https://zgrzmkizoqasamisnbho.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpncnpta2l6b3Fhc2FtaXNuYmhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwNTI1NTEsImV4cCI6MjA1NzYyODU1MX0.r0bSaDa9vSYMUSAPwj4DmUMOjG0JzVvPzmBicei3etM',
+    url: Environment.supabaseProjectUrl,
+    anonKey: Environment.supabaseApiKey,
   );
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
