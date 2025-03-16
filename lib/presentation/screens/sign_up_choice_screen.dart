@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:crafted/presentation/screens/sign_up_form_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpChoiceScreen extends StatelessWidget {
@@ -51,9 +52,14 @@ class SignUpChoiceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Crafted',
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          style: GoogleFonts.pressStart2p(
+            textStyle: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         centerTitle: true,
       ),
@@ -68,11 +74,18 @@ class SignUpChoiceScreen extends StatelessWidget {
               child: Text(
                 'Human stories and ideas.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.primary,
+                style: GoogleFonts.pressStart2p(
+                  textStyle: TextStyle(
+                    fontSize: 38,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
+                // style: TextStyle(
+                //   fontSize: 48,
+                //   fontWeight: FontWeight.w600,
+                //   color: Theme.of(context).colorScheme.primary,
+                // ),
               ),
             ),
             const SizedBox(height: 10),

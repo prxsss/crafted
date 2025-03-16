@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:crafted/presentation/screens/search_screen.dart';
 import 'package:crafted/presentation/screens/profile_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class MainLayout extends StatefulWidget {
@@ -37,7 +38,13 @@ class _MainLayoutState extends State<MainLayout> {
       appBar: AppBar(
         title: Text(
           appBarTitle,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: GoogleFonts.pressStart2p(
+            textStyle: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          // style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         actions: [
           activeScreen == 2

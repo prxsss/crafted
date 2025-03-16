@@ -3,6 +3,7 @@ import 'package:crafted/main.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignUpFormScreen extends StatefulWidget {
   const SignUpFormScreen({super.key});
@@ -113,11 +114,18 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                 const SizedBox(height: 20),
                 Text(
                   'Crafted',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                  style: GoogleFonts.pressStart2p(
+                    textStyle: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
+                  // style: TextStyle(
+                  //   fontSize: 28,
+                  //   fontWeight: FontWeight.bold,
+                  //   color: Theme.of(context).colorScheme.primary,
+                  // ),
                 ),
                 const SizedBox(height: 20),
                 Text(
