@@ -1,3 +1,6 @@
+import 'package:crafted/data/models/post.dart';
+import 'package:crafted/data/services/database_service.dart';
+import 'package:crafted/presentation/widgets/post_listing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +12,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final DatabaseService _databaseService = DatabaseService();
   final User? user = FirebaseAuth.instance.currentUser;
 
   @override
@@ -60,12 +64,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           Divider(thickness: 0),
           const SizedBox(height: 10),
-          Center(
-            child: Text(
-              "You don't have any posts.",
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
-            ),
+          StreamBuilder(
+            stream: _databaseService.getPostsByEmail(user!.email!),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return const Center(child: Text('Something went wrong'));
+              }
+
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Center(child: Text('No posts yet'));
+              }
+
+              final List posts = snapshot.data!.docs;
+
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  String postId = posts[index].id;
+                  Post post = posts[index].data();
+                  return PostListing(
+                    postId,
+                    post,
+                    showContentSample: false,
+                    showLikesCount: false,
+                    showCommentCount: false,
+                  );
+                },
+              );
+            },
           ),
+          // Center(
+          //   child: Text(
+          //     "You don't have any posts.",
+          //     style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          //   ),
+          // ),
         ],
       ),
     );

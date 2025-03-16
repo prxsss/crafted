@@ -32,6 +32,10 @@ class DatabaseService {
     return _postsRef.orderBy('createdAt', descending: true).snapshots();
   }
 
+  Stream<QuerySnapshot> getPostsByEmail(String email) {
+    return _postsRef.where('author.email', isEqualTo: email).snapshots();
+  }
+
   void addPost(Post post) async {
     await _postsRef.add(post);
   }
