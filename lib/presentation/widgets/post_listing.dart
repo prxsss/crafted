@@ -5,7 +5,6 @@ import 'package:crafted/main.dart';
 import 'package:crafted/presentation/screens/edit_post_screen.dart';
 import 'package:crafted/presentation/screens/post_detail_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
