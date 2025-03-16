@@ -33,6 +33,8 @@ class _SignInFormScreenState extends State<SignInFormScreen> {
       );
     } on FirebaseAuthException catch (e) {
       // แสดงข้อความ error ให้ผู้ใช้เห็น (เช่น SnackBar หรือ Dialog)
+      print(e.code);
+
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Invalid email or password')));
