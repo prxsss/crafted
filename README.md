@@ -2,11 +2,9 @@
 
 The mobile-based project, 'Crafted' is a platform to read, write, and enrich your knowledge, inspired by Medium and DEV Community.
 
-## Demo Video : [Click to see the Demo Video]()
+## Demo Video : [Click to see the Demo Video](https://youtu.be/L4_XQBq7jV0)
 
 <p align="center"><img src="assets\images\gif\artistry-hub-demo.gif" width="650" height="350"></p>
-
-<hr />
 
 ## Members
 
