@@ -80,6 +80,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
 
     _databaseService.addPost(
+      postId,
       Post(
         title: _titleController.text,
         content: _contentController.text,

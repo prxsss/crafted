@@ -13,6 +13,8 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final DatabaseService _databaseService = DatabaseService();
 
+  final searchController = TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -20,14 +22,20 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: TextField(
+            child: TextFormField(
+              controller: searchController,
+              onFieldSubmitted: (value) {
+                setState(() {
+                  searchController.text = value;
+                });
+              },
               decoration: InputDecoration(hintText: 'Search....'),
             ),
           ),
           const Divider(thickness: 0),
           const SizedBox(height: 10),
           StreamBuilder(
-            stream: _databaseService.getPosts(),
+            stream: _databaseService.seachPosts(searchController.text),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());

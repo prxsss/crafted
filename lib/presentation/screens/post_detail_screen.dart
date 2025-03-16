@@ -20,10 +20,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.white),
       body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 25),
+        padding: const EdgeInsets.symmetric(vertical: 24),
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: EdgeInsets.symmetric(horizontal: 24),
             child: Text(
               widget.post.title,
               style: TextStyle(
@@ -35,7 +35,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           ),
           const SizedBox(height: 30),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: EdgeInsets.symmetric(horizontal: 24),
             child: Row(
               children: [
                 CircleAvatar(
@@ -68,7 +68,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           ),
           const SizedBox(height: 30),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Image.network(widget.post.imageUrl),
+          ),
+          const SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: MarkdownBody(selectable: true, data: widget.post.content),
           ),
 

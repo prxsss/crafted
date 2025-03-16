@@ -1,14 +1,19 @@
 import 'dart:math' as math;
 import 'package:crafted/data/models/post.dart';
+import 'package:crafted/data/services/database_service.dart';
+import 'package:crafted/main.dart';
 import 'package:crafted/presentation/screens/edit_post_screen.dart';
 import 'package:crafted/presentation/screens/post_detail_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:markdown/markdown.dart' as md;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PostListing extends StatelessWidget {
-  const PostListing(
+  PostListing(
     this.postId,
     this.post, {
     super.key,
@@ -26,6 +31,9 @@ class PostListing extends StatelessWidget {
   final bool showContentSample;
   final bool showAuthor;
 
+  final DatabaseService _databaseService = DatabaseService();
+  final auth.User firebaseUser = auth.FirebaseAuth.instance.currentUser!;
+
   String markdownToPlainText(String markdown) {
     final parsed = md.Document().parseLines(markdown.split('\n'));
     final buffer = StringBuffer();
@@ -35,6 +43,11 @@ class PostListing extends StatelessWidget {
     }
 
     return buffer.toString().trim();
+  }
+
+  Future<void> deletePostCoverImage(String filePath) async {
+    final SupabaseClient supabase = Supabase.instance.client;
+    await supabase.storage.from('images').remove(['posts/$postId/cover.jpg']);
   }
 
   Future<dynamic> _displayDeletePostConfirmationDialog(BuildContext context) {
@@ -54,6 +67,7 @@ class PostListing extends StatelessWidget {
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 '"${post.title}"',
@@ -74,8 +88,20 @@ class PostListing extends StatelessWidget {
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                showDialog(
+                  context: context,
+                  builder:
+                      (context) =>
+                          const Center(child: CircularProgressIndicator()),
+                );
+
+                await deletePostCoverImage(post.imageUrl);
+                _databaseService.deletePost(postId);
+
+                navigatorKey.currentState!
+                    .pop(); // Close the CircularProgressIndicator
+                navigatorKey.currentState!.pop(); // Close the dialog
               },
               child: const Text('Delete'),
             ),
@@ -221,43 +247,46 @@ class PostListing extends StatelessWidget {
                     )
                     : const SizedBox.shrink(),
                 const Spacer(),
-                PopupMenuButton<String>(
-                  itemBuilder:
-                      (context) => [
-                        PopupMenuItem(
-                          value: 'edit',
-                          child: Row(
-                            children: const [
-                              FaIcon(FontAwesomeIcons.penToSquare),
-                              SizedBox(width: 10),
-                              Text('Edit'),
-                            ],
-                          ),
-                        ),
-                        PopupMenuItem(
-                          value: 'delete',
-                          child: Row(
-                            children: const [
-                              FaIcon(FontAwesomeIcons.trash),
-                              SizedBox(width: 10),
-                              Text('Delete'),
-                            ],
-                          ),
-                        ),
-                      ],
-                  onSelected: (value) {
-                    if (value == 'edit') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditPostScreen(),
-                        ),
-                      );
-                    } else if (value == 'delete') {
-                      _displayDeletePostConfirmationDialog(context);
-                    }
-                  },
-                ),
+                post.author.email == firebaseUser.email
+                    ? PopupMenuButton<String>(
+                      itemBuilder:
+                          (context) => [
+                            PopupMenuItem(
+                              value: 'edit',
+                              child: Row(
+                                children: const [
+                                  FaIcon(FontAwesomeIcons.penToSquare),
+                                  SizedBox(width: 10),
+                                  Text('Edit'),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Row(
+                                children: const [
+                                  FaIcon(FontAwesomeIcons.trash),
+                                  SizedBox(width: 10),
+                                  Text('Delete'),
+                                ],
+                              ),
+                            ),
+                          ],
+                      onSelected: (value) {
+                        if (value == 'edit') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => EditPostScreen(postId, post),
+                            ),
+                          );
+                        } else if (value == 'delete') {
+                          _displayDeletePostConfirmationDialog(context);
+                        }
+                      },
+                    )
+                    : const SizedBox.shrink(),
               ],
             ),
           ],

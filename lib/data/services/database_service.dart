@@ -36,12 +36,23 @@ class DatabaseService {
     return _postsRef.where('author.email', isEqualTo: email).snapshots();
   }
 
-  void addPost(Post post) async {
-    await _postsRef.add(post);
+  Stream<QuerySnapshot> seachPosts(String query) {
+    return _postsRef
+        .where('title', isGreaterThanOrEqualTo: query)
+        .where('title', isLessThanOrEqualTo: '$query\uf8ff')
+        .snapshots();
+  }
+
+  void addPost(String postId, Post post) async {
+    await _postsRef.doc(postId).set(post);
   }
 
   void updatePost(String postId, Post post) async {
     _postsRef.doc(postId).update(post.toJson());
+  }
+
+  void deletePost(String postId) async {
+    _postsRef.doc(postId).delete();
   }
 
   // users

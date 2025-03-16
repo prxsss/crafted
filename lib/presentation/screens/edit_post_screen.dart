@@ -4,19 +4,21 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crafted/data/models/post.dart';
-import 'package:crafted/data/models/user.dart' as crafted;
 import 'package:crafted/data/services/database_service.dart';
 import 'package:crafted/main.dart';
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:uuid/uuid.dart';
 
 class EditPostScreen extends StatefulWidget {
-  const EditPostScreen({super.key});
+  final String postId;
+  final Post post;
+
+  const EditPostScreen(this.postId, this.post, {super.key});
 
   @override
   State<EditPostScreen> createState() => _EditPostScreenState();
@@ -27,8 +29,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final _titleController = TextEditingController();
-  final _contentController = TextEditingController();
+  late final TextEditingController _titleController;
+  late final TextEditingController _contentController;
+  late final String _orginalImagePath;
 
   File? _selectedImage;
 
@@ -52,7 +55,11 @@ class _EditPostScreenState extends State<EditPostScreen> {
 
     await supabase.storage
         .from('images')
-        .upload(postCoverImagePath, _selectedImage!);
+        .update(
+          postCoverImagePath,
+          _selectedImage!,
+          fileOptions: FileOptions(cacheControl: '3600', upsert: false),
+        );
 
     final uploadedPostCoverImageUrl = supabase.storage
         .from('images')
@@ -61,7 +68,30 @@ class _EditPostScreenState extends State<EditPostScreen> {
     return uploadedPostCoverImageUrl;
   }
 
-  Future<void> createPost() async {
+  Future<void> downloadImage(String url) async {
+    try {
+      print('url: $url');
+
+      final tempDir = await getTemporaryDirectory();
+
+      // I don't know why, but if I don't set the file path with DateTime the image will be a duplicate of the previous post image.
+      final filePath =
+          '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}/downloaded_image.jpg';
+
+      await Dio().download(url, filePath);
+
+      print('filePath: $filePath');
+
+      setState(() {
+        _selectedImage = File(filePath);
+        _orginalImagePath = filePath;
+      });
+    } catch (e) {
+      print('Error downloading image: $e');
+    }
+  }
+
+  Future<void> savePost() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -70,33 +100,40 @@ class _EditPostScreenState extends State<EditPostScreen> {
       },
     );
 
-    final auth.User firebaseUser = auth.FirebaseAuth.instance.currentUser!;
-    final String postId = Uuid().v4();
-    final uploadedPostCoverImageUrl = await uploadImageAndGetUrl(postId);
-    final crafted.User author = crafted.User(
-      email: firebaseUser.email!,
-      name: firebaseUser.displayName!,
-      photoUrl: firebaseUser.photoURL!,
+    String? uploadedPostCoverImageUrl;
+
+    if (_orginalImagePath != _selectedImage!.path) {
+      uploadedPostCoverImageUrl = await uploadImageAndGetUrl(widget.postId);
+    }
+
+    Post updatedPost = widget.post.copyWith(
+      title: _titleController.text,
+      content: _contentController.text,
+      updatedAt: Timestamp.now(),
+      imageUrl: uploadedPostCoverImageUrl,
     );
 
-    _databaseService.addPost(
-      Post(
-        title: _titleController.text,
-        content: _contentController.text,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-        imageUrl: uploadedPostCoverImageUrl,
-        author: author,
-      ),
-    );
+    _databaseService.updatePost(widget.postId, updatedPost);
 
     navigatorKey.currentState!.pop(); // Close the dialog
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.post.title);
+    _contentController = TextEditingController(text: widget.post.content);
+    downloadImage(widget.post.imageUrl);
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _contentController.dispose();
+    if (_selectedImage != null && _selectedImage!.existsSync()) {
+      _selectedImage!.delete();
+      print('Selected image deleted');
+    }
     super.dispose();
   }
 
@@ -104,12 +141,12 @@ class _EditPostScreenState extends State<EditPostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Post'),
+        title: const Text('Edit Post'),
         actions: [
           ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                await createPost();
+                await savePost();
                 navigatorKey.currentState!
                     .pop(); // close the current screen (CreatePostScreen)
               }
@@ -118,7 +155,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
             ),
-            child: const Text('Post', style: TextStyle(fontSize: 16)),
+            child: const Text('Save', style: TextStyle(fontSize: 16)),
           ),
           const SizedBox(width: 18),
         ],
