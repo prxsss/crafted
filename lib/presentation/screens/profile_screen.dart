@@ -63,7 +63,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Divider(thickness: 0),
-          const SizedBox(height: 8),
           StreamBuilder(
             stream: _databaseService.getPostsByEmail(user!.email!),
             builder: (context, snapshot) {
@@ -93,6 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     post,
                     showLikesCount: false,
                     showCommentCount: false,
+                    showAuthor: false,
                   );
                 },
                 separatorBuilder:
