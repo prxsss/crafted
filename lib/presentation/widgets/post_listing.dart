@@ -59,16 +59,14 @@ class PostListing extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.grey,
                     borderRadius: BorderRadius.circular(10),
-                    image: const DecorationImage(
-                      image: NetworkImage(
-                        'https://avatar.iran.liara.run/public/boy?username=Arunangshu',
-                      ),
+                    image: DecorationImage(
+                      image: NetworkImage(post.author.photoUrl),
                     ),
                   ),
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  'Arunangshu Das',
+                  post.author.name,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -95,7 +93,7 @@ class PostListing extends StatelessWidget {
                           ? Text(
                             markdownToPlainText(post.content),
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurface,
+                              color: Theme.of(context).colorScheme.secondary,
                               overflow: TextOverflow.ellipsis,
                             ),
                             maxLines: 2,

@@ -40,9 +40,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               children: [
                 CircleAvatar(
                   backgroundColor: Colors.grey,
-                  backgroundImage: NetworkImage(
-                    'https://avatar.iran.liara.run/public/boy?username=Arunangshu',
-                  ),
+                  backgroundImage: NetworkImage(widget.post.author.photoUrl),
                 ),
                 SizedBox(width: 15),
                 Expanded(
@@ -50,7 +48,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Arunangshu Das',
+                        widget.post.author.name,
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.primary,

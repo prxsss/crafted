@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crafted/data/models/post.dart';
+import 'package:crafted/data/models/user.dart' as crafted;
 import 'package:crafted/data/services/database_service.dart';
 import 'package:crafted/main.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -69,9 +70,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       },
     );
 
-    final firebaseUser = auth.FirebaseAuth.instance.currentUser!;
+    final auth.User firebaseUser = auth.FirebaseAuth.instance.currentUser!;
     final String postId = Uuid().v4();
     final uploadedPostCoverImageUrl = await uploadImageAndGetUrl(postId);
+    final crafted.User author = crafted.User(
+      email: firebaseUser.email!,
+      name: firebaseUser.displayName!,
+      photoUrl: firebaseUser.photoURL!,
+    );
 
     _databaseService.addPost(
       Post(
@@ -80,9 +86,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
         imageUrl: uploadedPostCoverImageUrl,
-        authorRef: FirebaseFirestore.instance
-            .collection('users')
-            .doc(firebaseUser.email),
+        author: author,
       ),
     );
 

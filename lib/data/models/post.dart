@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crafted/data/models/user.dart';
 
 class Post {
   String title;
@@ -6,7 +7,7 @@ class Post {
   Timestamp createdAt;
   Timestamp updatedAt;
   String imageUrl;
-  DocumentReference authorRef;
+  User author;
 
   Post({
     required this.title,
@@ -14,7 +15,7 @@ class Post {
     required this.createdAt,
     required this.updatedAt,
     required this.imageUrl,
-    required this.authorRef,
+    required this.author,
   });
 
   Post.fromJson(Map<String, Object?> json)
@@ -24,7 +25,7 @@ class Post {
         createdAt: json['createdAt']! as Timestamp,
         updatedAt: json['updatedAt']! as Timestamp,
         imageUrl: json['imageUrl']! as String,
-        authorRef: json['authorRef']! as DocumentReference,
+        author: User.fromJson(json['author']! as Map<String, Object?>),
       );
 
   Post copyWith({
@@ -45,7 +46,7 @@ class Post {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       imageUrl: imageUrl ?? this.imageUrl,
-      authorRef: authorRef,
+      author: author,
     );
   }
 
@@ -56,7 +57,7 @@ class Post {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'imageUrl': imageUrl,
-      'authorRef': authorRef,
+      'author': author.toJson(),
     };
   }
 }
