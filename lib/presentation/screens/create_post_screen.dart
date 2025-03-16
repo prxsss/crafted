@@ -7,6 +7,7 @@ import 'package:crafted/data/models/post.dart';
 import 'package:crafted/data/services/database_service.dart';
 import 'package:crafted/main.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -68,6 +69,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       },
     );
 
+    final firebaseUser = auth.FirebaseAuth.instance.currentUser!;
     final String postId = Uuid().v4();
     final uploadedPostCoverImageUrl = await uploadImageAndGetUrl(postId);
 
@@ -78,6 +80,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
         imageUrl: uploadedPostCoverImageUrl,
+        authorRef: FirebaseFirestore.instance
+            .collection('users')
+            .doc(firebaseUser.email),
       ),
     );
 

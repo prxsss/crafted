@@ -6,6 +6,7 @@ class Post {
   Timestamp createdAt;
   Timestamp updatedAt;
   String imageUrl;
+  DocumentReference authorRef;
 
   Post({
     required this.title,
@@ -13,6 +14,7 @@ class Post {
     required this.createdAt,
     required this.updatedAt,
     required this.imageUrl,
+    required this.authorRef,
   });
 
   Post.fromJson(Map<String, Object?> json)
@@ -22,6 +24,7 @@ class Post {
         createdAt: json['createdAt']! as Timestamp,
         updatedAt: json['updatedAt']! as Timestamp,
         imageUrl: json['imageUrl']! as String,
+        authorRef: json['authorRef']! as DocumentReference,
       );
 
   Post copyWith({
@@ -42,6 +45,7 @@ class Post {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       imageUrl: imageUrl ?? this.imageUrl,
+      authorRef: authorRef,
     );
   }
 
@@ -52,6 +56,7 @@ class Post {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'imageUrl': imageUrl,
+      'authorRef': authorRef,
     };
   }
 }
