@@ -14,6 +14,7 @@ class PostListing extends StatelessWidget {
     this.showCommentCount = true,
     this.showLikesCount = true,
     this.showContentSample = true,
+    this.showAuthor = true,
   });
 
   final String postId;
@@ -22,6 +23,7 @@ class PostListing extends StatelessWidget {
   final bool showCommentCount;
   final bool showLikesCount;
   final bool showContentSample;
+  final bool showAuthor;
 
   String markdownToPlainText(String markdown) {
     final parsed = md.Document().parseLines(markdown.split('\n'));
@@ -51,29 +53,31 @@ class PostListing extends StatelessWidget {
         decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
         child: Column(
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      image: NetworkImage(post.author.photoUrl),
+            showAuthor
+                ? Row(
+                  children: [
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: NetworkImage(post.author.photoUrl),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  post.author.name,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
+                    const SizedBox(width: 10),
+                    Text(
+                      post.author.name,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                )
+                : const SizedBox.shrink(),
+            showAuthor ? const SizedBox(height: 15) : const SizedBox.shrink(),
             Row(
               children: [
                 Expanded(
