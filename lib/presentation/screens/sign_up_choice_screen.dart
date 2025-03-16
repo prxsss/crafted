@@ -37,7 +37,14 @@ class SignUpChoiceScreen extends StatelessWidget {
 
     auth.User firebaseUser = auth.FirebaseAuth.instance.currentUser!;
 
-    _databaseService.createUserInDatabaseWithEmail(firebaseUser);
+    if (firebaseUser.metadata.creationTime!
+            .difference(firebaseUser.metadata.lastSignInTime!)
+            .abs() <
+        Duration(seconds: 1)) {
+      print('Creating new user in Database');
+
+      _databaseService.createUserInDatabaseWithEmail(firebaseUser);
+    }
   }
 
   @override

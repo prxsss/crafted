@@ -1,16 +1,51 @@
+import 'package:crafted/data/services/database_service.dart';
 import 'package:crafted/presentation/widgets/auth_button.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 
 import 'package:crafted/presentation/screens/sign_in_form_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInChoiceScreen extends StatelessWidget {
-  const SignInChoiceScreen({
+  SignInChoiceScreen({
     super.key,
     required this.onNavigateToSignUpScreenPressed,
   });
 
+  final DatabaseService _databaseService = DatabaseService();
+
   final void Function() onNavigateToSignUpScreenPressed;
+
+  Future<void> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = auth.GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    final auth.User user =
+        (await auth.FirebaseAuth.instance.signInWithCredential(
+          credential,
+        )).user!;
+
+    print('Successfully signed in with Google: ${user.displayName}');
+
+    auth.User firebaseUser = auth.FirebaseAuth.instance.currentUser!;
+
+    if (firebaseUser.metadata.creationTime!
+            .difference(firebaseUser.metadata.lastSignInTime!)
+            .abs() <
+        Duration(seconds: 1)) {
+      print('Creating new user in Database');
+
+      _databaseService.createUserInDatabaseWithEmail(firebaseUser);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +88,9 @@ class SignInChoiceScreen extends StatelessWidget {
             AuthButton(
               icon: FontAwesomeIcons.google,
               text: 'Sign in with Google',
-              onAuthButtonPressed: () {},
+              onAuthButtonPressed: () async {
+                await signInWithGoogle();
+              },
             ),
             AuthButton(
               icon: FontAwesomeIcons.envelope,

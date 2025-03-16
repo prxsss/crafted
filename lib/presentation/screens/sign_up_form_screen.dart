@@ -67,6 +67,23 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
     } on auth.FirebaseAuthException catch (e) {
       // ignore: avoid_print
       print(e);
+      String errorMessage = '';
+      if (e.code == 'email-already-in-use') {
+        errorMessage = 'Email already in use. Please try again.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'Invalid email. Please try again.';
+      } else if (e.code == 'weak-password') {
+        errorMessage = 'Weak password. Please try again.';
+      } else {
+        errorMessage = 'An error occurred. Please try again.';
+      }
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(errorMessage)));
+
+      navigatorKey.currentState!.pop();
+      return;
     }
     navigatorKey.currentState!.popUntil(
       (route) => route.isFirst,
@@ -158,6 +175,9 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your email';
                           }
+                          if (!value.contains('@')) {
+                            return 'Please enter a valid email';
+                          }
                           return null;
                         },
                         decoration: InputDecoration(
@@ -185,6 +205,9 @@ class _SignUpFormScreenState extends State<SignUpFormScreen> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password';
+                          }
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
                           }
                           return null;
                         },
