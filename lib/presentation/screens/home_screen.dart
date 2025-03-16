@@ -18,11 +18,19 @@ class _HomeScreenState extends State<HomeScreen> {
     return StreamBuilder(
       stream: _databaseService.getPosts(),
       builder: (context, snapshot) {
-        List posts = snapshot.data?.docs ?? [];
-        print(posts);
-        if (posts.isEmpty) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return const Center(child: Text('Something went wrong'));
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return Center(child: const Text('No posts yet'));
         }
+
+        final List posts = snapshot.data!.docs;
 
         return ListView.separated(
           itemCount: posts.length,

@@ -29,10 +29,20 @@ class _SearchScreenState extends State<SearchScreen> {
           StreamBuilder(
             stream: _databaseService.getPosts(),
             builder: (context, snapshot) {
-              List posts = snapshot.data?.docs ?? [];
-              if (posts.isEmpty) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return const Center(child: Text('Something went wrong'));
+              }
+
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                 return const Center(child: Text('No posts yet'));
               }
+
+              final List posts = snapshot.data!.docs;
+
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
