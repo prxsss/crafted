@@ -1,16 +1,14 @@
-# crafted
+# Crafted
 
-A new Flutter project.
+The mobile-based project, 'Crafted' is a platform to read, write, and enrich your knowledge, inspired by Medium and DEV Community.
 
-## Getting Started
+## Demo Video : [Click to see the Demo Video]()
 
-This project is a starting point for a Flutter application.
+<p align="center"><img src="assets\images\gif\artistry-hub-demo.gif" width="650" height="350"></p>
 
-A few resources to get you started if this is your first Flutter project:
+<hr />
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Members
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 6530200126 : [Nattapat Klinkajorn](https://github.com/nantta)
+- 6530200363 : [Phuriphat Kittikun](https://github.com/prxsss)
