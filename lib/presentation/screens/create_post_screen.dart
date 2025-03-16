@@ -35,7 +35,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       source: ImageSource.gallery,
     );
     if (returnedImage == null) {
-      // ignore: avoid_print
       print('No image selected');
       return;
     }
@@ -43,6 +42,46 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     setState(() {
       _selectedImage = File(returnedImage.path);
     });
+  }
+
+  Future<String> uploadImageAndGetUrl(String postId) async {
+    final SupabaseClient supabase = Supabase.instance.client;
+    final String postCoverImagePath = 'posts/$postId/cover.jpg';
+
+    await supabase.storage
+        .from('images')
+        .upload(postCoverImagePath, _selectedImage!);
+
+    final uploadedPostCoverImageUrl = supabase.storage
+        .from('images')
+        .getPublicUrl(postCoverImagePath);
+
+    return uploadedPostCoverImageUrl;
+  }
+
+  Future<void> createPost() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    final String postId = Uuid().v4();
+    final uploadedPostCoverImageUrl = await uploadImageAndGetUrl(postId);
+
+    _databaseService.addPost(
+      Post(
+        title: _titleController.text,
+        content: _contentController.text,
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+        imageUrl: uploadedPostCoverImageUrl,
+      ),
+    );
+
+    navigatorKey.currentState!.pop(); // Close the dialog
   }
 
   @override
@@ -61,35 +100,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                final String postId = Uuid().v4();
-                final supabase = Supabase.instance.client;
-                final String postCoverImagePath = 'posts/$postId/cover.jpg';
-
-                final uploadedPostCoverImagePath = await supabase.storage
-                    .from('images')
-                    .upload(postCoverImagePath, _selectedImage!);
-
-                print('uploadedPostCoverImagePath');
-                print(uploadedPostCoverImagePath);
-
-                final uploadedPostCoverImageUrl = supabase.storage
-                    .from('images')
-                    .getPublicUrl(postCoverImagePath);
-
-                print('uploadedPostCoverImageUrl');
-                print(uploadedPostCoverImageUrl);
-
-                _databaseService.addPost(
-                  Post(
-                    title: _titleController.text,
-                    content: _contentController.text,
-                    createdAt: Timestamp.now(),
-                    updatedAt: Timestamp.now(),
-                    imageUrl: uploadedPostCoverImageUrl,
-                  ),
-                );
-
-                navigatorKey.currentState!.pop();
+                await createPost();
+                navigatorKey.currentState!
+                    .pop(); // close the current screen (CreatePostScreen)
               }
             },
             style: ElevatedButton.styleFrom(
