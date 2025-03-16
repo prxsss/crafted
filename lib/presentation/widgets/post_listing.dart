@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:crafted/data/models/post.dart';
+import 'package:crafted/presentation/screens/edit_post_screen.dart';
 import 'package:crafted/presentation/screens/post_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,6 +35,54 @@ class PostListing extends StatelessWidget {
     }
 
     return buffer.toString().trim();
+  }
+
+  Future<dynamic> _displayDeletePostConfirmationDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+          title: Text(
+            'Are you sure you want to delete this post?',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '"${post.title}"',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Deletion is not reversible, and the post will be completely deleted.',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -171,6 +220,44 @@ class PostListing extends StatelessWidget {
                       ),
                     )
                     : const SizedBox.shrink(),
+                const Spacer(),
+                PopupMenuButton<String>(
+                  itemBuilder:
+                      (context) => [
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: Row(
+                            children: const [
+                              FaIcon(FontAwesomeIcons.penToSquare),
+                              SizedBox(width: 10),
+                              Text('Edit'),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Row(
+                            children: const [
+                              FaIcon(FontAwesomeIcons.trash),
+                              SizedBox(width: 10),
+                              Text('Delete'),
+                            ],
+                          ),
+                        ),
+                      ],
+                  onSelected: (value) {
+                    if (value == 'edit') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditPostScreen(),
+                        ),
+                      );
+                    } else if (value == 'delete') {
+                      _displayDeletePostConfirmationDialog(context);
+                    }
+                  },
+                ),
               ],
             ),
           ],
