@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Divider(thickness: 0),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           StreamBuilder(
             stream: _databaseService.getPostsByEmail(user!.email!),
             builder: (context, snapshot) {
@@ -76,12 +76,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
 
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return const Center(child: Text('No posts yet'));
+                return const Center(child: Text("You don't have any posts."));
               }
 
               final List posts = snapshot.data!.docs;
 
-              return ListView.builder(
+              return ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: posts.length,
@@ -91,20 +91,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return PostListing(
                     postId,
                     post,
-                    showContentSample: false,
                     showLikesCount: false,
                     showCommentCount: false,
                   );
                 },
+                separatorBuilder:
+                    (context, index) => const Divider(thickness: 0),
               );
             },
           ),
-          // Center(
-          //   child: Text(
-          //     "You don't have any posts.",
-          //     style: TextStyle(color: Theme.of(context).colorScheme.primary),
-          //   ),
-          // ),
         ],
       ),
     );
